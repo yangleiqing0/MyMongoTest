@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% block title %}用户登录{% endblock %}
+{% block content %}
+   <div class="row">
+        <div class="col-md-6 col-md-offset-3"><div class="panel panel-primary" style="margin:100px 0 100px 0">
+                <div class="panel-heading" >
+                    <h4>用户登录</h4>
+                </div>
+                <div class="panel-body">
+                    <form action="#" method="post" class="form-horizontal">
+                        <div class="form-group"></div>
+                        <div class="form-group">
+                            <label for="username" class="form-label col-md-2 col-md-offset-2">账号</label>
+                            <div class="input-group col-md-5">
+                                <div class="input-group ">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    <input type="text" id="username" name="username" class="form-control" placeholder="账号" value="{{ request.cookies.get('SESSIONID').split(';')[0] if request.cookies.get('SESSIONID') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label col-md-2 col-md-offset-2">密码</label>
+                            <div class="input-group col-md-5">
+                                <div class="input-group">
+                                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="密码" value="{{ request.cookies.get('SESSIONID').split(';')[1] if request.cookies.get('SESSIONID') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4 col-md-offset-4">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4"></div>
+                            <input type="submit" value="登录" id="login" class="btn btn-default">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

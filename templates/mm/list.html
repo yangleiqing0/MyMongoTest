@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% block title %}物料列表{% endblock %}
+{% block content %}
+    <div class="panel-body">
+        <table class="table table-hover">
+        <div class="col-md-12">
+            <div class="col-md-5">
+                <form action="#" role="search" class="navbar-form">
+                    <div class="form-group col-md-8">
+                        <input name="search"  type="text" value="{{ search if search else "" }}" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">查询</button>
+                </form>
+            </div>
+            <div class="col-md-offset-11">
+                <div class="float-right">
+                    <div class="form-group col-md-8" style="margin-top: 7px">
+                      <a  href="{{ url_for('mm_blueprint.mm_edit') }}"><button class="btn btn-default " style="color: black">添加</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <tr>
+                <th>UUID</th>
+                <th>物料名</th>
+                <th>备注</th>
+                <th>序列号</th>
+                <th>操作</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.remark }}</td>
+                <td>{{ item.number}}</td>
+                <td>
+                    <a href="{{ url_for('mm_blueprint.mm_edit', uuid=item.id) }}" class="btn btn-default btn-xs" title="编辑"><i class="fa fa-pencil"></i></a>
+                    <a href="{{ url_for('mm_blueprint.mm_del', uuid=item.id) }}" class="btn btn-default btn-xs" title="删除"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+    $(document).ready(function () {
+    })
+    </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+{% block title %}编辑自主产品信息{% endblock %}
+{% block content %}
+        <div class="panel-body content-agileits" >
+            <form action="{{ url_for('zz_blueprint.zz_edit', uuid=zz.id if zz else "") }}" method="POST" id="zz_form" data-toggle="validator" class="form-horizontal">
+                {{ macro.form_group(lable_name="dj",blank_name="点胶",value=zz.dj if zz else "") }}
+                {{ macro.form_group(lable_name="sj",blank_name="烧结",value=zz.sj if zz else "") }}
+                {{ macro.form_group(lable_name="dm",blank_name="镀膜",value=zz.dm if zz else "") }}
+                {{ macro.form_group(lable_name="jy",blank_name="检验",value=zz.jy if zz else "") }}
+                {{ macro.submit(submit_id="zz") }}
+            </form>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+    $(document).ready(function () {
+
+});
+
+    </script>
+{% endblock %}

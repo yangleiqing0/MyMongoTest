@@ -1,0 +1,383 @@
+{% import 'base/macro.html' as macro %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动化平台</title>
+
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+    <link href="{{url_for('static',filename='css/amazeui.min.css')}}"  rel="stylesheet">
+    <link href="{{url_for('static',filename='css/app.css')}}"  rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{{url_for('static',filename='js/app.js' , charset= "UTF-8")}}"></script>
+    <link rel="icon" href="{{url_for('static',filename='img/log.png')}}" type="image/x-icon">
+
+</head>
+<body style="background-color:ghostwhite;"  >
+<div class="tpl-page-container tpl-page-header-fixed" style="padding-top: 0">
+    <div style="height: 20px;width: 100%;background-color:ghostwhite;"></div>
+    <div class="row" >
+        <nav class="navbar navbar-default" role="navigation"
+             style="padding: 10px 0 10px 0;margin:0 15px 0 15px">
+            <div class="navbar-header"  >
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">产品信息中心</a>
+
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if session.get('username') %}
+                        <li><a href=""><i class="fa fa-user"></i>{{session.get('username')}}</a></li>
+                        <li><a href="{{ url_for('login_blueprint.logout') }}">退出登陆</a></li>
+                    {% elif session.get('username') == None %}
+                        <li><a href="{{ url_for('login_blueprint.login') }}" >请登陆</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div style="height: 20px;width: 100%;"></div>
+    <div class="panel tpl-left-nav tpl-left-nav-hover panel-default panel-heading " style="width: 10%;background-color: rgba(248,248,248,0.42)">
+        {% if session.get('username') %}
+        <div class="tpl-left-nav-list">
+            <ul class="tpl-left-nav-menu ">
+                <li class="tpl-left-nav-item">
+                     <a href="{{ url_for('zz_blueprint.zz_list') }}" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-th-list am-icon-fw"></i>
+                        <span>自主产品列表</span>
+                        </a>
+                </li>
+                <li class="tpl-left-nav-item">
+                     <a href="{{ url_for('dg_blueprint.dg_list') }}" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-th-list am-icon-fw"></i>
+                        <span>代工产品列表</span>
+                        </a>
+                </li>
+                <li class="tpl-left-nav-item">
+                     <a href="{{ url_for('mm_blueprint.mm_list') }}" class="nav-link tpl-left-nav-link-list">
+                        <i class="am-icon-th-list am-icon-fw"></i>
+                        <span>物料列表</span>
+                        </a>
+                </li>
+            </ul>
+        </div>
+        {% else %}
+            请登录管理员账号注册用户
+        {% endif %}
+    </div>
+    <div  class="col-md-9 body-content" style="top: 115px">
+        <div class="container" style="width: 100%">
+            <div class="row" >
+                <div class="col-md-12" >
+                    <div class="panel panel-default" id="get_container_height" >
+                        <div class="panel-heading text-center" >
+                            <h1>
+                                {% block title %}
+                                {% endblock %}
+                            </h1>
+                        </div>
+                            <div id="ajax_content">
+                                {%block content%}
+                                {%endblock%}
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ macro.flash_msg() }}
+{% block js %}
+{%endblock%}
+</body>
+</html>
+{% block css %}
+{% endblock %}
+<style>
+    th:first-child{
+        width: 240px;
+    }
+    html,body{
+        width: 100%;
+        float: left;
+    }
+    .body-content{
+        left: 280px;
+        height:90%;
+        position: fixed;
+        {#overflow-x: hidden;#}
+        overflow-y: auto;
+    }
+    .body-content::-webkit-scrollbar {
+        {#display: none;#}
+    }
+    .tpl-page-header-fixed{
+        position: fixed;
+        width: 100%;
+        z-index: 888;
+    }
+    .fa{
+        zoom:1.3
+    }
+    table.table-text-center>tbody>tr>td,table.table-text-center>tbody>tr>th{
+        text-align: center;
+    }
+    .fa-title-size{
+        zoom: 2.2;
+        margin-top: 1px;
+    }
+    .error{
+        color: red;
+    }
+    table{
+        table-layout:fixed;
+    }
+    xmp{
+        height: 40px
+    ;
+    }
+    .no-padding{
+        text-align: center;
+        padding: 8px;
+        margin: 0
+    }
+    .has_no_padding{
+        text-align: center;
+        padding: 0;
+        margin: 0;
+    }
+    {# 最大宽度100px  居中   超过宽度后自动隐藏... #}
+    table > tbody > tr > th,td,
+    .dots{
+        text-align: left;
+        max-width: 190px;
+        width:100%;
+        word-break:break-all;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        {#height: 30px;#}
+    }
+    .form-horizontal .form-group {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+    .logs{
+        overflow:hidden;
+    }
+    td{
+    vertical-align: center;
+    }
+    th,td{
+        border: solid 1px #ddd;
+    }
+    .chooseBtn {
+            display: none;
+        }
+
+        .choose-label {
+            box-shadow: #ccc 0px 0px 0px 1px;
+            width: 40px;
+            height: 20px;
+            display: inline-block;
+            border-radius: 20px;
+            position: relative;
+            background-color: #bdbdbd;
+            overflow: hidden;
+        }
+
+        .choose-label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            border-radius: 20px;
+            background-color: #fff;
+            z-index: 20;
+            -webkit-transition: all 0.5s;
+            transition: all 0.5s;
+        }
+
+        .chooseBtn:checked + label.choose-label:before {
+            left: 20px;
+        }
+
+        .chooseBtn:checked + label.choose-label {
+            background-color: #51ccee;
+        }
+.custom-layer{
+     width: 60%;
+     padding: 10px;
+     -webkit-border-radius: 10px;
+     -moz-border-radius: 10px;
+     border-radius: 10px;
+     font: 16px "Microsoft YaHei UI";
+     background: #fff;
+     float: left;
+}
+.float-right{
+    float: right;
+}
+    .prompt-center{
+        position: absolute;
+        z-index: 9999;
+        width: 438px;
+        height: 90px;
+        left:0; right:0; top:50px; bottom:0;
+        margin: 0 auto;
+    }
+    .prompt-login{
+        text-align: center;
+        position: absolute;
+        z-index: 9999;
+        left:0; right:0; top:50px; bottom:0;
+        margin: 0 auto;
+        width: 150px;
+        height: 53px;
+    }
+</style>
+<script>
+    /**
+          * @return {string}
+          */
+     function GetQueryString(name)
+        {
+             let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+             let r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+             if(r != null){
+                 return  unescape(r[2]);
+             }else {
+                 return '';
+             }
+        }
+
+  function back_img() {
+  //封装方法，压缩之后减少文件大小
+  function get_attribute(node, attr, default_value) {
+    return node.getAttribute(attr) || default_value;
+  }
+  //封装方法，压缩之后减少文件大小
+  function get_by_tagname(name) {
+    return document.getElementsByTagName(name);
+  }
+  //获取配置参数
+  function get_config_option() {
+    var scripts = get_by_tagname("script"),
+      script_len = scripts.length,
+      script = scripts[script_len - 1]; //当前加载的script
+    return {
+      l: script_len, //长度，用于生成id用
+      z: get_attribute(script, "zIndex", 1 ), //z-index
+      o: get_attribute(script, "opacity", 0.5), //opacity
+      c: get_attribute(script, "color", "0,0,0"), //color
+      n: get_attribute(script, "count", 99) //count
+    };
+  }
+  //设置canvas的高宽
+  function set_canvas_size() {
+    canvas_width = the_canvas.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+    canvas_height = the_canvas.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  }
+
+  //绘制过程
+  function draw_canvas() {
+    context.clearRect(0, 0, canvas_width, canvas_height);
+    //随机的线条和当前位置联合数组
+    var e, i, d, x_dist, y_dist, dist; //临时节点
+    //遍历处理每一个点
+    random_points.forEach(function(r, idx) {
+      r.x += r.xa,
+      r.y += r.ya, //移动
+      r.xa *= r.x > canvas_width || r.x < 0 ? -1 : 1,
+      r.ya *= r.y > canvas_height || r.y < 0 ? -1 : 1, //碰到边界，反向反弹
+      context.fillRect(r.x - 0.5, r.y - 0.5, 1, 1); //绘制一个宽高为1的点
+      //从下一个点开始
+      for (i = idx + 1; i < all_array.length; i++) {
+        e = all_array[i];
+        // 当前点存在
+        if (null !== e.x && null !== e.y) {
+          x_dist = r.x - e.x; //x轴距离 l
+          y_dist = r.y - e.y; //y轴距离 n
+          dist = x_dist * x_dist + y_dist * y_dist; //总距离, m
+
+          dist < e.max && (e === current_point && dist >= e.max / 2 && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist), //靠近的时候加速
+            d = (e.max - dist) / e.max,
+            context.beginPath(),
+            context.lineWidth = d / 2,
+            context.strokeStyle = "rgba(" + config.c + "," + (d + 0.2) + ")",
+            context.moveTo(r.x, r.y),
+            context.lineTo(e.x, e.y),
+            context.stroke());
+        }
+      }
+    }), frame_func(draw_canvas);
+  }
+  //创建画布，并添加到body中
+  var the_canvas = document.createElement("canvas"), //画布
+    config = get_config_option(), //配置
+    canvas_id = "c_n" + config.l, //canvas id
+    context = the_canvas.getContext("2d"), canvas_width, canvas_height,
+    frame_func = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(func) {
+      window.setTimeout(func, 1000 / 45);
+    }, random = Math.random,
+    current_point = {
+      x: null, //当前鼠标x
+      y: null, //当前鼠标y
+      max: 20000 // 圈半径的平方
+    },
+    all_array;
+  the_canvas.id = canvas_id;
+  the_canvas.style.cssText = "position:fixed;top:0;left:0;z-index:" + config.z + ";opacity:" + config.o;
+  get_by_tagname("body")[0].appendChild(the_canvas);
+
+  //初始化画布大小
+  set_canvas_size();
+  window.onresize = set_canvas_size;
+  //当时鼠标位置存储，离开的时候，释放当前位置信息
+  window.onmousemove = function(e) {
+    e = e || window.event;
+    current_point.x = e.clientX;
+    current_point.y = e.clientY;
+  }, window.onmouseout = function() {
+    current_point.x = null;
+    current_point.y = null;
+  };
+  //随机生成config.n条线位置信息
+  for (var random_points = [], i = 0; config.n > i; i++) {
+    var x = random() * canvas_width, //随机位置
+      y = random() * canvas_height,
+      xa = 2 * random() - 1, //随机运动方向
+      ya = 2 * random() - 1;
+    // 随机点
+    random_points.push({
+      x: x,
+      y: y,
+      xa: xa,
+      ya: ya,
+      max: 6000 //沾附距离
+    });
+  }
+  all_array = random_points.concat([current_point]);
+  //0.1秒后绘制
+  setTimeout(function() {
+    draw_canvas();
+  }, 100);
+}
+$(document).ready(function(){
+
+})
+
+</script>

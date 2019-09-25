@@ -1,0 +1,102 @@
+{% macro form_group(lable_name,blank_name,id_name=lable_name,name_name=lable_name,placeholder_name=blank_name,
+type_name="text",lable_class_name="control-label col-md-4",div_class_name="col-md-4",
+input_name="form-control",value="",disabled="",class_name="") %}
+        <div class="form-group agileinfo wthree w3-agileits agile {{ class_name }}">
+            <label for="{{ lable_name }}" class="{{ lable_class_name }}">{{ blank_name if blank_name else ""}}</label>
+            <div class="{{ div_class_name }}">
+                <input type="{{ type_name }}" class="{{ input_name }}" id="{{ id_name }}" name="{{ name_name }}"
+                       placeholder="{{ placeholder_name }} " value="{{ value if value else ""}}" {{ disabled }} >
+            </div>
+{#            <div class="help-block with-errors" style="color: red"></div>#}
+        </div>
+{% endmacro %}
+
+{% macro form_group_textarea(
+lable_name,blank_name,id_name=lable_name,name_name=lable_name,
+placeholder_name=blank_name,lable_class_name="control-label col-md-4",
+div_class_name="col-md-4",
+textarea_class_name="form-control",textarea_style="resize: vertical;min-height: 68px",rows="8",col="10",value="") %}
+ <div class="form-group">
+    <label for="{{ lable_name }}" class="{{ lable_class_name }}">{{ blank_name }}</label>
+        <div class="{{ div_class_name }}">
+            <textarea rows="{{ rows }}" cols="{{ col }}" style="{{ textarea_style }}" class="{{ textarea_class_name }}" id="{{ id_name }}" name="{{ name_name }}" placeholder="{{ placeholder_name }}" >{{ value }}</textarea>
+    </div>
+</div>
+{% endmacro %}
+
+
+{% macro submit(submit_value="提交",reset_value="重置",test_type="hidden",
+div_class="control-label col-md-6",div_style="margin-left:75px",submit_id="",test_id="",reset_id="",
+submit_type="submit",reset_type="reset",test_value="测试",test_style="visibility: hidden;") %}
+<div class="{{ div_class }}" style="{{ div_style }}">
+        <input type="{{ submit_type }}" class="btn btn-primary" style="" value="{{ submit_value }}" id="{{ submit_id }}">
+        <input type="{{ test_type }}" class="btn btn-primary" style="{{test_style}}" value={{test_value}} id={{ test_id }}>
+        <input type="{{ reset_type }}" class="btn btn-default" value="{{ reset_value }}" id="{{ reset_id }}">
+</div>
+{% endmacro %}
+
+{% macro submit_test(submit_name="提交", submit_id="",test_type="submit",
+div_style="margin-left:108px") %}
+<div class="control-label col-md-6" style="{{ div_style }}" >
+    <input type="submit" class="btn btn-primary" value="{{ submit_name }}" id="{{ submit_id }}">
+    <input type="{{test_type}}" class="btn btn-primary" name="test" value="测试" id="update_testcase_test">
+    <input type="reset" class="btn btn-default" value="重置">
+</div>
+{% endmacro %}
+
+
+{% macro pagination_widget(pagination, endpoint) %}
+    <div class="col-md-offset-5"><ul class="pagination">
+     <li{% if not pagination.has_prev %} class="disabled"{% endif %}>
+         <a href="{% if pagination.has_prev %}{{ url_for(endpoint, page=pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
+          &laquo;
+      </a>
+    </li>
+   {% for p in pagination.iter_pages() %}
+       {% if p %}
+        {% if p == pagination.page %}
+           <li class="active"><a href="{{ url_for(endpoint, page=p, **kwargs) }}">{{ p }}</a></li>
+        {% else %}
+           <li><a href="{{ url_for(endpoint, page=p, **kwargs) }}">{{ p }}</a></li>
+        {% endif %}
+     {% endif %}
+   {% endfor %}
+    <li{% if not pagination.has_next %} class="disabled"{% endif %}>
+         <a href="{% if pagination.has_next %}{{ url_for(endpoint, page=pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
+        &raquo;
+       </a>
+    </li>
+ </ul></div>
+
+{% endmacro %}
+
+
+{% macro render_field(field) %}
+<tr>
+    <td>{{ field.label }}</td>
+    <td>{{ field(**kwargs) }}</td>
+    <td>
+        {% if field.errors %}
+            <ul>
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </td>
+    </tr>
+{% endmacro %}
+
+
+
+{% macro flash_msg() %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-warning prompt-login" {{ 'hidden' if session.get('flash_show') == '0' else '' }}>
+                        {{ msg}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+{% endmacro %}

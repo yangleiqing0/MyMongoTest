@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+{% block title %}编辑物料信息{% endblock %}
+{% block content %}
+        <div class="panel-body content-agileits" >
+            <form action="{{ url_for('mm_blueprint.mm_edit', uuid=mm.id if mm else "") }}" method="POST" id="mm_form" data-toggle="validator" class="form-horizontal">
+                {{ macro.form_group(lable_name="name",blank_name="物料名",value=mm.name if mm else "") }}
+                {{ macro.form_group(lable_name="remark",blank_name="备注",value=mm.remark if mm else "") }}
+                {{ macro.submit(submit_id="mm") }}
+            </form>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+    $(document).ready(function () {
+
+});
+
+    </script>
+{% endblock %}

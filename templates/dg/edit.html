@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% block title %}编辑代工产品信息{% endblock %}
+{% block content %}
+        <div class="panel-body content-agileits" >
+            <form action="{{ url_for('dg_blueprint.dg_edit', uuid=dg.id if dg else "") }}" method="POST" id="dg_form" data-toggle="validator" class="form-horizontal">
+                {{ macro.form_group(lable_name="qx",blank_name="清洗",value=dg.qx if dg else "") }}
+                {{ macro.form_group(lable_name="dm",blank_name="镀膜",value=dg.dm if dg else "") }}
+                {{ macro.form_group(lable_name="jy",blank_name="检验",value=dg.jy if dg else "") }}
+                {{ macro.submit(submit_id="dg") }}
+            </form>
+        </div>
+{% endblock %}
+{% block js %}
+    <script>
+    $(document).ready(function () {
+
+});
+
+    </script>
+{% endblock %}
