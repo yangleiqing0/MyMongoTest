@@ -1,13 +1,14 @@
 from flask.views import MethodView
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, session
 from models import DG
-from common import request_get_values, get_number
-from views.com import str_num_dg
+from common import request_get_values, get_number, get_num
+from views.com import str_num_dg, str_num_dg_list
+from datetime import datetime
 
 
-def _get_number():
+def _get_number(_str_num=str_num_dg):
 
-    _num = get_number(next(str_num_dg))
+    _num = get_number(next(_str_num))
     return _num
 
 
@@ -18,7 +19,7 @@ class DGList(MethodView):
 
     def get(self):
         search = request_get_values('search')
-        dg_list = DG.objects(number__contains=search).all()
+        dg_list = DG.objects(number__contains=search).order_by('-number').all()
         return render_template('dg/list.html', items=dg_list, search=search)
 
 
@@ -37,7 +38,12 @@ class DGEdit(MethodView):
             dg = DG.objects(id=uuid).all().first()
             dg.update(qx=qx, dm=dm, jy=jy)
         else:
-            DG(qx=qx, dm=dm, jy=jy, number=_get_number()).save()
+            if session.get('dg_data') and session.get('dg_data') != datetime.now().strftime('%Y%m%d'):
+                print('!=')
+                str_num_dg_list[0] = get_num()
+            session['dg_data'] = datetime.now().strftime('%Y%m%d')
+            DG(qx=qx, dm=dm, jy=jy, number=_get_number(str_num_dg_list[0])).save()
+
         return redirect(url_for('dg_blueprint.dg_list'))
 
 

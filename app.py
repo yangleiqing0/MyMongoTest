@@ -1,15 +1,15 @@
 from _main import register_init
 from flask import request, session, redirect, url_for
-from flask_mongoengine import MongoEngine
+# from flask_mongoengine import MongoEngine
 
 app = register_init()
 app.secret_key = 'asldfwadadw@fwq@#!Eewew'
-app.config['MONGODB_SETTINGS'] = {
-    'db': 'productDB',
-    'host': 'localhost',
-    'port': 27017
-}
-db = MongoEngine(app)
+# app.config['MONGODB_SETTINGS'] = {
+#     'db': 'productDB',
+#     'host': 'localhost',
+#     'port': 27017
+# }
+# db = MongoEngine(app)
 
 
 @app.before_request    # 在请求达到视图前执行

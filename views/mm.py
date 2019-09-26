@@ -1,13 +1,14 @@
 from flask.views import MethodView
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, session
 from models import MM
-from common import request_get_values, get_number
-from views.com import str_num_mm
+from common import request_get_values, get_number, get_num
+from views.com import str_num_mm, str_num_mm_list
+from datetime import datetime
 
 
-def _get_number():
+def _get_number(_str_num=str_num_mm):
 
-    _num = get_number(next(str_num_mm))
+    _num = get_number(next(_str_num))
     return _num
 
 
@@ -18,7 +19,7 @@ class MMList(MethodView):
 
     def get(self):
         search = request_get_values('search')
-        mm_list = MM.objects(number__contains=search).all()
+        mm_list = MM.objects(number__contains=search).order_by('-number').all()
         return render_template('mm/list.html', items=mm_list, search=search)
 
 
@@ -37,7 +38,10 @@ class MMEdit(MethodView):
             mm = MM.objects(id=uuid).all().first()
             mm.update(name=name, remark=remark)
         else:
-            MM(name=name, remark=remark, number=_get_number()).save()
+            if session.get('mm_data') and session.get('mm_data') != datetime.now().strftime('%Y%m%d'):
+                str_num_mm_list[0] = get_num()
+            session['mm_data'] = datetime.now().strftime('%Y%m%d')
+            MM(name=name, remark=remark, number=_get_number(str_num_mm_list[0])).save()
         return redirect(url_for('mm_blueprint.mm_list'))
 
 
